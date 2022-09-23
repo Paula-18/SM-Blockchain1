@@ -1,4 +1,5 @@
 import Block from "./block";
+import validate from './modules/validate';
 
 class Blockchain {
     constructor() {
@@ -14,6 +15,19 @@ class Blockchain {
 
         return block;
     }
+
+    replace(newBlocks = []) {
+        if (newBlocks.length < this.blocks.length) throw Error('Cadena recebida no tiene la longitud correcta.');
+        try {
+          validate(newBlocks);
+        } catch (error) {
+          throw Error('Cadena recibida invalida');
+        }
+    
+        this.blocks = newBlocks;
+    
+        return this.blocks;
+      }
 }
 
 export default Blockchain;
