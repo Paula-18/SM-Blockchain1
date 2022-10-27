@@ -21,6 +21,8 @@ app.post('/mine', (req, res) => {
     const { body: { data }} = req;
     const block = blockchain.addBlock(data);
 
+    p2pservice.sync();
+
     res.json({
         blocks: blockchain.blocks.length,
         block,

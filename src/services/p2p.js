@@ -30,10 +30,23 @@ class P2PService {
         socket.on('message', (message) =>{
             const {type, value} = JSON.parse(message);
 
+            //Verificar type
+            try{
+                if(type === MESSAGE.BLOCKS) this.blockchain.replace(value);
+
+            }catch (error){
+                console.log(`[ws:message] error ${error}`);
+            }
+
             console.log({type, value});
         });
 
         socket.send(JSON.stringify({type: MESSAGE.BLOCKS, value: blocks}));
+    }
+
+    sync(){
+        const { blockchain: { blocks } } = this;
+        this.broadcast(MESSAGE.BLOCKS, blocks);
     }
 
     broadcast(type, value){
@@ -44,3 +57,4 @@ class P2PService {
 }
 
 export default P2PService;
+//set HTTP_PORT= 3001 && set P2P_PORT=5001 && set PEERS=ws:localhost:5000 && yarn start
